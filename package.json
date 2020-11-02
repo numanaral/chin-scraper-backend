@@ -1,0 +1,41 @@
+{
+  "name": "chin-scraper-backend",
+  "version": "1.0.0",
+  "description": "Backend for chin-scraper. Includes google-translate-api, cors-anywhere, pinyin-js (TO ADD)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "lint": "eslint src/*.js",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:f": "npm run lint:fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/numanaral/chin-scraper-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/numanaral/chin-scraper-backend/issues"
+  },
+  "homepage": "https://github.com/numanaral/chin-scraper-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "extended-google-translate-api": "^1.1.1",
+    "helmet": "^4.1.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
+  }
+}
