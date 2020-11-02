@@ -17,6 +17,7 @@ app.use(
 	cors({
 		credentials: true,
 		methods: 'GET',
+		// https://medium.com/zero-equals-false/using-cors-in-express-cac7e29b005b
 		origin: (origin, callback) => {
 			// allow requests with no origin
 			// (like mobile apps or curl requests)
