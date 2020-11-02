@@ -7,6 +7,7 @@ require('dotenv').config();
 
 const app = express();
 
+app.set('json spaces', 4);
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(
