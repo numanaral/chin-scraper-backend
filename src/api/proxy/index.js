@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/*', async (req, res, next) => {
 	try {
-		const result = proxy(req.params[0]);
+		const result = await proxy(req.params[0]);
 		res.send(result);
 	} catch (err) {
 		next(generateError(err, 'Failed to proxy.'));
