@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
 	});
 });
 
+app.use(middleware.checkRequiredHeaders);
 app.use(middleware.notFound);
 app.use(middleware.errorHandler);
 
