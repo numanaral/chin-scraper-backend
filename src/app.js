@@ -5,6 +5,7 @@ const cors = require('cors');
 
 require('dotenv').config();
 
+const middleware = require('./middleware');
 const app = express();
 
 app.set('json spaces', 4);
@@ -35,5 +36,8 @@ app.get('/', (req, res) => {
 		message: "Welcome to the Chinese Scraper's Backend 👋",
 	});
 });
+
+app.use(middleware.notFound);
+app.use(middleware.errorHandler);
 
 module.exports = app;
