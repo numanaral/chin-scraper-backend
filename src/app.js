@@ -6,6 +6,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const middleware = require('./middleware');
+const api = require('./api');
+
 const app = express();
 
 app.set('json spaces', 4);
@@ -38,6 +40,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(middleware.checkRequiredHeaders);
+app.use('/api', api);
+
 app.use(middleware.notFound);
 app.use(middleware.errorHandler);
 
