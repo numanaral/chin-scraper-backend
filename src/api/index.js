@@ -1,5 +1,6 @@
 const express = require('express');
 
+const proxy = require('./proxy');
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -7,5 +8,7 @@ router.get('/', (req, res) => {
 		message: 'API',
 	});
 });
+
+router.use('/proxy', proxy);
 
 module.exports = router;
