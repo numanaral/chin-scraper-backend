@@ -90,8 +90,13 @@ const getCustomResult = ({
 	transcription: wordTranscription || translationTranscription,
 });
 
+// Base indexes
+const TRANSCRIPT_AND_PINYIN_BASE_INDEX = 0;
+const TRANSLATION_BASE_INDEX = 5;
 // Indexes for where these results are located in the final array
-const TRANSLATION_INDEX = 0;
+const TRANSLATION_INDEX_PART_1 = 2;
+const TRANSLATION_INDEX_PART_2 = 1;
+const TRANSLATION_INDEX_PART_3 = 0;
 const WORD_TRANSCRIPTION_INDEX = 3;
 const TRANSLATION_TRANSCRIPTION_INDEX = 2;
 
@@ -141,38 +146,117 @@ const TRANSLATION_TRANSCRIPTION_INDEX = 2;
  *	            "Nǐ hǎo, wǒ jiào nǔ màn!!!|Nǐ |hǎo |wǒ |jiào |nǔ |màn"	// => WORD TRANSCRIPTION
  *	        ]
  *		]
-		// NOT INTERESTED IN THE REST OF THE RESPONSE
+		// NOT INTERESTED IN THE REST OF THE RESPONSE - that is what I thought, but if google decides there are different full sentence translations, 
+		// this will return incorrect results...
+		// SO WE ARE INTERESTED IN THE REST OF THE RESPONSE, TO BE MORE SPECIFIC, WE NEED result[5]
+		null,
+		"zh-CN",
+		null,
+		null,
+		// For different full sentence translations google returns, there will be extra array results here, we need to grab all of those
+		// Single result
+		// http://localhost:8080/api/translate?from=zh-CN&to=en&extended=true&text=%E6%88%91%E5%8F%AB%E5%8A%AA%E6%9B%BC&raw=true
+		// Multiple result
+		// http://localhost:8080/api/translate?from=zh-CN&to=en&extended=true&text=%E5%B0%8F%E5%A5%BD%E4%B9%85%E9%94%99%E6%83%B3%E8%A7%89%E5%BE%97%E6%84%8F%E6%80%9D%E6%9C%89%E6%84%8F%E6%80%9D%E5%8F%AA%E7%9D%A1%E8%A7%89%E7%AE%97%E4%BA%86%E6%89%BE%E5%88%AB%E7%9A%84%E5%88%AB%E4%BA%BA&raw=true
+		// Lets look at this one
+		// http://localhost:8080/api/translate?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E5%8F%AB%E5%8A%AA%E6%9B%BC%EF%BC%81&from=zh-CN&to=en&extended=true&raw=true
+		// Which is this
+		// http://localhost:8080/api/translate?text=你好，我叫努曼！&from=zh-CN&to=en&extended=true&raw=true
+		[
+			// we are interested in [2][1] for each result, and we need to concatenate those
+			[
+				"你好，我叫努曼！",
+				null,
+				[
+					[
+						"Hello, my name is Nutum!",
+						0,
+						true,
+						false
+					],
+					// THIS RIGHT HERE AND
+					[
+						"Hello, my name is Numan!",
+						0,
+						true,
+						false
+					]
+				],
+				[
+					[
+						0,
+						8
+					]
+				],
+				"你好，我叫努曼！",
+				0,
+				0
+			],
+			[
+				"|你|好|我|叫|努|曼",
+				null,
+				[
+					[
+						"| 你 | 好 | | | 叫 | |",
+						0,
+						true,
+						false
+					],
+					// THIS RIGHT HERE CONCATENATED ON TOP OF THE FIRST
+					[
+						"| You | good | I | call | Nu | Man",
+						0,
+						true,
+						false
+					]
+				],
+				[
+					[
+						0,
+						12
+					]
+				],
+				"|你|好|我|叫|努|曼",
+				0,
+				0
+			]
+		]
  *	]
  */
 const parseResultFromRaw = res => {
-	const base = res[0];
-
+	const transcriptAndPinyinBase = res[TRANSCRIPT_AND_PINYIN_BASE_INDEX];
+	const translationBase = res[TRANSLATION_BASE_INDEX];
 	// Collect translation pieces:
 	// Adding chinese punctuation (special characters) to the
 	// translation adds extra arrays as results.
 	// [see: @description]
 	// So to make sure we always get consistent results, we need
 	// to go through the entire array and append the results.
+	// EDIT: Google sending multiple translation results also mess
+	// this up, so instead of using res[0], we need to parse res[5]
 
-	// Latest translation array is the array before the last in
-	// the base
-	const translationEnd = base.length - 2;
-	let translation = '';
-	let i = 0;
-	while (i <= translationEnd) {
-		// This is where the translation resides in
-		translation += base[i][TRANSLATION_INDEX];
-		i++;
-	}
+	// We need all the results in res[5], and for each result, we
+	// need [2][1] concatenated
+	const translation = translationBase.reduce(
+		(acc, translateResult) =>
+			acc +
+			// eslint-disable-next-line prettier/prettier
+			translateResult[TRANSLATION_INDEX_PART_1][TRANSLATION_INDEX_PART_2][TRANSLATION_INDEX_PART_3],
+		''
+	);
 
 	// Both word and translation transcription array is the last
 	// array of the base
 	const transcriptionBaseIndex = res[0].length - 1;
 	// This is where the word transcription resides in
 	const wordTranscription =
-		base[transcriptionBaseIndex][WORD_TRANSCRIPTION_INDEX];
+		transcriptAndPinyinBase[transcriptionBaseIndex][
+			WORD_TRANSCRIPTION_INDEX
+		];
 	const translationTranscription =
-		base[transcriptionBaseIndex][TRANSLATION_TRANSCRIPTION_INDEX];
+		transcriptAndPinyinBase[transcriptionBaseIndex][
+			TRANSLATION_TRANSCRIPTION_INDEX
+		];
 
 	return {
 		translation,
@@ -180,6 +264,53 @@ const parseResultFromRaw = res => {
 		translationTranscription,
 	};
 };
+
+// /**
+//  * I thought this worked for both zh-CN to en, and en to zh-CN
+//  * But it doesn't work when google sends multiple translations.
+//  * I am fixing zh-CN to en but until I have more time to work on
+//  * en to zh-CN, I will keep this here
+//  */
+// // Indexes for where these results are located in the final array
+// const TRANSLATION_INDEX = 0;
+// const WORD_TRANSCRIPTION_INDEX = 3;
+// const TRANSLATION_TRANSCRIPTION_INDEX = 2;
+// const parseResultFromRawOLD = res => {
+// 	const base = res[0];
+
+// 	// Collect translation pieces:
+// 	// Adding chinese punctuation (special characters) to the
+// 	// translation adds extra arrays as results.
+// 	// [see: @description]
+// 	// So to make sure we always get consistent results, we need
+// 	// to go through the entire array and append the results.
+
+// 	// Latest translation array is the array before the last in
+// 	// the base
+// 	const translationEnd = base.length - 2;
+// 	let translation = '';
+// 	let i = 0;
+// 	while (i <= translationEnd) {
+// 		// This is where the translation resides in
+// 		translation += base[i][TRANSLATION_INDEX];
+// 		i++;
+// 	}
+
+// 	// Both word and translation transcription array is the last
+// 	// array of the base
+// 	const transcriptionBaseIndex = res[0].length - 1;
+// 	// This is where the word transcription resides in
+// 	const wordTranscription =
+// 		base[transcriptionBaseIndex][WORD_TRANSCRIPTION_INDEX];
+// 	const translationTranscription =
+// 		base[transcriptionBaseIndex][TRANSLATION_TRANSCRIPTION_INDEX];
+
+// 	return {
+// 		translation,
+// 		wordTranscription,
+// 		translationTranscription,
+// 	};
+// };
 
 // TODO: When translating from EN to CH, allow extended option
 // This might be a lot of work as we can't just assume char/word

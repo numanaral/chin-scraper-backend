@@ -1,0 +1,395 @@
+http://localhost:8080/api/translate?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E5%8F%AB%E5%8A%AA%E6%9B%BC%EF%BC%81&from=zh-CN&to=en&extended=true&raw=true
+[
+    [
+        [
+            "Hello, my name is Nutum! ",
+            "你好，我叫努曼！",
+            null,
+            null,
+            3,
+            null,
+            null,
+            [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    true
+                ]
+            ],
+            [
+                [
+                    [
+                        "676e6bfae35bd1f419abe83d5bb33621",
+                        "offline_launch_doc.md"
+                    ]
+                ]
+            ]
+        ],
+        [
+            "| 你 | 好 | | | 叫 | |",
+            "|你|好|我|叫|努|曼",
+            null,
+            null,
+            3,
+            null,
+            null,
+            [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    true
+                ]
+            ],
+            [
+                [
+                    [
+                        "676e6bfae35bd1f419abe83d5bb33621",
+                        "offline_launch_doc.md"
+                    ]
+                ]
+            ]
+        ],
+        [
+            null,
+            null,
+            null,
+            "Nǐ hǎo, wǒ jiào nǔ màn!|Nǐ |hǎo |wǒ |jiào |nǔ |màn"
+        ]
+    ],
+    null,
+    "zh-CN",
+    null,
+    null,
+    [
+        [
+            "你好，我叫努曼！",
+            null,
+            [
+                [
+                    "Hello, my name is Nutum!",
+                    0,
+                    true,
+                    false
+                ],
+                [
+                    "Hello, my name is Numan!",
+                    0,
+                    true,
+                    false
+                ]
+            ],
+            [
+                [
+                    0,
+                    8
+                ]
+            ],
+            "你好，我叫努曼！",
+            0,
+            0
+        ],
+        [
+            "|你|好|我|叫|努|曼",
+            null,
+            [
+                [
+                    "| 你 | 好 | | | 叫 | |",
+                    0,
+                    true,
+                    false
+                ],
+                [
+                    "| You | good | I | call | Nu | Man",
+                    0,
+                    true,
+                    false
+                ]
+            ],
+            [
+                [
+                    0,
+                    12
+                ]
+            ],
+            "|你|好|我|叫|努|曼",
+            0,
+            0
+        ]
+    ],
+    1,
+    [],
+    [
+        [
+            "zh-CN"
+        ],
+        null,
+        [
+            1
+        ],
+        [
+            "zh-CN"
+        ]
+    ]
+]
+
+
+
+
+
+
+
+=======================================================================
+http://localhost:8080/api/translate?from=zh-CN&to=en&extended=true&text=%E6%88%91%E5%8F%AB%E5%8A%AA%E6%9B%BC&raw=true
+
+[
+    [
+        [
+            "My name is Numman | I | Call | Nu | Man",
+            "我叫努曼|我|叫|努|曼",
+            null,
+            null,
+            3,
+            null,
+            null,
+            [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    true
+                ]
+            ],
+            [
+                [
+                    [
+                        "676e6bfae35bd1f419abe83d5bb33621",
+                        "offline_launch_doc.md"
+                    ]
+                ]
+            ]
+        ],
+        [
+            null,
+            null,
+            null,
+            "Wǒ jiào nǔ màn |wǒ |jiào |nǔ |màn"
+        ]
+    ],
+    null,
+    "zh-CN",
+    null,
+    null,
+    [
+        [
+            "我叫努曼|我|叫|努|曼",
+            null,
+            [
+                [
+                    "My name is Numman | I | Call | Nu | Man",
+                    0,
+                    true,
+                    false
+                ],
+                [
+                    "My name is Numan | I | call | Nu | Man",
+                    0,
+                    true,
+                    false
+                ]
+            ],
+            [
+                [
+                    0,
+                    12
+                ]
+            ],
+            "我叫努曼|我|叫|努|曼",
+            0,
+            0
+        ]
+    ],
+    1,
+    [],
+    [
+        [
+            "zh-CN"
+        ],
+        null,
+        [
+            1
+        ],
+        [
+            "zh-CN"
+        ]
+    ]
+]
+
+
+
+
+
+
+
+
+
+=======================================================================
+
+
+http://localhost:8080/api/translate?from=zh-CN&to=en&extended=true&text=%E5%B0%8F%E5%A5%BD%E4%B9%85%E9%94%99%E6%83%B3%E8%A7%89%E5%BE%97%E6%84%8F%E6%80%9D%E6%9C%89%E6%84%8F%E6%80%9D%E5%8F%AA%E7%9D%A1%E8%A7%89%E7%AE%97%E4%BA%86%E6%89%BE%E5%88%AB%E7%9A%84%E5%88%AB%E4%BA%BA&raw=true
+
+[
+    [
+        [
+            "Little long time, I think I mean what I want to sleep. I'm going to sleep. I don't want to find someone else | Good | Good | Wrong | want | | 得 | 意 | | 有 | 意 | 意 | | | | | | | 了 | ",
+            "小好久错想觉得意思有意思只睡觉算了找别的别人|小|好|久|错|想|觉|得|意|思|有|意|思|只|睡|觉|算|了|",
+            null,
+            null,
+            3,
+            null,
+            null,
+            [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    true
+                ]
+            ],
+            [
+                [
+                    [
+                        "676e6bfae35bd1f419abe83d5bb33621",
+                        "offline_launch_doc.md"
+                    ]
+                ]
+            ]
+        ],
+        [
+            "Looking for | don't |",
+            "找|别|的|别|人",
+            null,
+            null,
+            3,
+            null,
+            null,
+            [
+                [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    true
+                ]
+            ],
+            [
+                [
+                    [
+                        "676e6bfae35bd1f419abe83d5bb33621",
+                        "offline_launch_doc.md"
+                    ]
+                ]
+            ]
+        ],
+        [
+            null,
+            null,
+            null,
+            "Xiǎo hǎojiǔ cuò xiǎng juédé yìsi yǒuyìsi zhǐ shuìjiào suànle zhǎo bié de biérén |xiǎo |hǎo |jiǔ |cuò |xiǎng |jué |dé |yì |sī |yǒu |yì |sī |zhǐ |shuì |jué |suàn |le |zhǎo |bié |de |bié |rén"
+        ]
+    ],
+    null,
+    "zh-CN",
+    null,
+    null,
+    [
+        [
+            "小好久错想觉得意思有意思只睡觉算了找别的别人|小|好|久|错|想|觉|得|意|思|有|意|思|只|睡|觉|算|了|",
+            null,
+            [
+                [
+                    "Little long time, I think I mean what I want to sleep. I'm going to sleep. I don't want to find someone else | Good | Good | Wrong | want | | 得 | 意 | | 有 | 意 | 意 | | | | | | | 了 |",
+                    0,
+                    true,
+                    false
+                ],
+                [
+                    "Small mistake for a long time want to feel mean only sleep forget find other interesting people | Small | good | long | wrong | want | felt | was | Italy | Best | have | Italy | Best | only | sleep | sleep | considered | a |",
+                    0,
+                    true,
+                    false
+                ]
+            ],
+            [
+                [
+                    0,
+                    57
+                ]
+            ],
+            "小好久错想觉得意思有意思只睡觉算了找别的别人|小|好|久|错|想|觉|得|意|思|有|意|思|只|睡|觉|算|了|",
+            0,
+            0
+        ],
+        [
+            "找|别|的|别|人",
+            null,
+            [
+                [
+                    "Looking for | don't |",
+                    0,
+                    true,
+                    false
+                ],
+                [
+                    "find | do | the | other | people",
+                    0,
+                    true,
+                    false
+                ]
+            ],
+            [
+                [
+                    0,
+                    9
+                ]
+            ],
+            "找|别|的|别|人",
+            0,
+            0
+        ]
+    ],
+    1,
+    [],
+    [
+        [
+            "zh-CN"
+        ],
+        null,
+        [
+            1
+        ],
+        [
+            "zh-CN"
+        ]
+    ]
+]
