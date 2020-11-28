@@ -94,9 +94,8 @@ const getCustomResult = ({
 const TRANSCRIPT_AND_PINYIN_BASE_INDEX = 0;
 const TRANSLATION_BASE_INDEX = 5;
 // Indexes for where these results are located in the final array
-const TRANSLATION_INDEX_PART_1 = 2;
-const TRANSLATION_INDEX_PART_2 = 1;
-const TRANSLATION_INDEX_PART_3 = 0;
+const TRANSLATION_RESULT_INDEX = 2;
+const TRANSLATION_INDEX = 0;
 const WORD_TRANSCRIPTION_INDEX = 3;
 const TRANSLATION_TRANSCRIPTION_INDEX = 2;
 
@@ -163,7 +162,7 @@ const TRANSLATION_TRANSCRIPTION_INDEX = 2;
 		// Which is this
 		// http://localhost:8080/api/translate?text=你好，我叫努曼！&from=zh-CN&to=en&extended=true&raw=true
 		[
-			// we are interested in [2][1] for each result, and we need to concatenate those
+			// we are interested in [2][lastIndex][0] for each result, and we need to concatenate those
 			[
 				"你好，我叫努曼！",
 				null,
@@ -236,14 +235,15 @@ const parseResultFromRaw = res => {
 	// this up, so instead of using res[0], we need to parse res[5]
 
 	// We need all the results in res[5], and for each result, we
-	// need [2][1] concatenated
-	const translation = translationBase.reduce(
-		(acc, translateResult) =>
-			acc +
-			// eslint-disable-next-line prettier/prettier
-			translateResult[TRANSLATION_INDEX_PART_1][TRANSLATION_INDEX_PART_2][TRANSLATION_INDEX_PART_3],
-		''
-	);
+	// need [2][lastIndex][1] concatenated
+	// lastIndex is where we want to look at as that's the correct
+	// translation
+	const translation = translationBase.reduce((acc, translateResult) => {
+		const lastIndex = translateResult[TRANSLATION_RESULT_INDEX].length - 1;
+
+		// eslint-disable-next-line prettier/prettier
+		return acc + translateResult[TRANSLATION_RESULT_INDEX][lastIndex][TRANSLATION_INDEX];
+	}, '');
 
 	// Both word and translation transcription array is the last
 	// array of the base
