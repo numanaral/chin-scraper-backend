@@ -6,7 +6,7 @@
  */
 const generateError = (err, userMessage, devMessage = '') => {
 	const message =
-		(process.env.NODE_ENV === 'production' && userMessage) ||
+		// (process.env.NODE_ENV === 'production' && userMessage) ||
 		`${
 			(!devMessage && '') ||
 			`${devMessage}${(!devMessage.endsWith('.') && '.') || ''} `
