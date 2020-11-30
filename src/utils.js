@@ -11,6 +11,7 @@ const generateError = (err, userMessage, devMessage = '') => {
 			(!devMessage && '') ||
 			`${devMessage}${(!devMessage.endsWith('.') && '.') || ''} `
 		}${err.message}`;
+
 	return new Error(message);
 };
 
