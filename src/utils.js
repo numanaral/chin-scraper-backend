@@ -15,6 +15,9 @@ const generateError = (err, userMessage, devMessage = '') => {
 	return new Error(message);
 };
 
+const firstCapital = s => (s && s[0].toUpperCase() + s.slice(1)) || '';
+
 module.exports = {
 	generateError,
+	firstCapital,
 };
