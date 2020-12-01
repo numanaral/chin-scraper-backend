@@ -11,7 +11,7 @@ const stripNonChineseChars = text =>
 	text.replace(REGEX_STRIP_NON_CHINESE_CHARS, '');
 
 // init Google Translate client
-const googleTranslate = new Translate({ key: process.env.GOOGLE_TEST_API_KEY });
+const googleTranslate = new Translate({ key: process.env.GOOGLE_API_KEY });
 
 const getTranslations = (text, from, to) =>
 	googleTranslate.translate([text, ...stripNonChineseChars(text).split('')], {
