@@ -40,7 +40,7 @@ const getPinyin = text => global.pinyinUtil.getPinyin(text, ' ', true, true);
  */
 const maskResult = (translations, pinyin) => ({
 	translation: firstCapital(translations.join('|').toLowerCase()),
-	pinyin: [pinyin, ...pinyin.split(' ')].join('|').toLowerCase(),
+	transcription: [pinyin, ...pinyin.split(' ')].join('|').toLowerCase(),
 });
 
 const getTranslationAndPinyin = async query => {
