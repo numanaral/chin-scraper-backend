@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:18
+FROM node:18-alpine
 
 # Set the working directory in the container
 WORKDIR /src
@@ -12,3 +12,6 @@ RUN npm install
 
 # Define the entry point for the container
 CMD ["npm", "start"]
+
+# Expose the port the application runs on
+EXPOSE 8080

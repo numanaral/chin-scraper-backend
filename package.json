@@ -10,9 +10,6 @@
     "lint:fix": "npm run lint -- --fix",
     "lint:f": "npm run lint:fix"
   },
-  "engines": {
-    "node": "13.x"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/numanaral/chin-scraper-backend.git"
