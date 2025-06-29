@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src:/src/src
+      - ./package.json:/src/package.json
+      - /src/node_modules
+    env_file:
+      - .env.local
+    command: npx nodemon src/index.js
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped 

@@ -5,10 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "lint": "eslint src/*.js",
-    "lint:fix": "npm run lint -- --fix",
-    "lint:f": "npm run lint:fix"
+    "start": "npm run compose:prod",
+    "dev": "npm run compose:dev",
+    "stop": "npm run compose:stop",
+    "logs": "npm run compose:logs",
+    "compose:dev": "docker compose up --build",
+    "compose:prod": "docker compose -f docker-compose.prod.yml up --build",
+    "compose:stop": "docker compose down && docker compose -f docker-compose.prod.yml down",
+    "compose:logs": "docker compose logs -f",
+    "lint": "eslint src/**/*.js",
+    "eslint:fix": "npm run lint -- --fix",
+    "prettier:fix": "prettier --write src/**/*.js",
+    "lint:f": "npm run eslint:fix && npm run prettier:fix",
+    "lint:fp": "npm run prettier:fix"
   },
   "repository": {
     "type": "git",
@@ -37,6 +46,7 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
+    "nodemon": "^3.0.2",
     "prettier": "^2.1.2"
   }
 }
