@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const { Translate } = require('@google-cloud/translate').v2;
 const { firstCapital } = require('../../utils');
 // Import pinyinjs, it has bunch of global set,
 // but I don't have time to modify that right now.
@@ -11,32 +11,15 @@ const stripNonChineseChars = text => {
 	return text.replace(REGEX_STRIP_NON_CHINESE_CHARS, '');
 };
 
-const getTranslations = async (text, from, to, referrer) => {
+// Init Google Translate client.
+const googleTranslate = new Translate({ key: process.env.GOOGLE_API_KEY });
+
+const getTranslations = (text, from, to) => {
 	const strippedChineseChars = stripNonChineseChars(text).split('');
-	const textsToTranslate = [text, ...strippedChineseChars];
-
-	const url = `https://translation.googleapis.com/language/translate/v2?key=${process.env.GOOGLE_API_KEY}`;
-	const response = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Referer: referrer || process.env.ALLOWED_ORIGINS?.split(',')[0],
-		},
-		body: JSON.stringify({
-			q: textsToTranslate,
-			source: from,
-			target: to,
-			format: 'text',
-		}),
+	return googleTranslate.translate([text, ...strippedChineseChars], {
+		from,
+		to,
 	});
-
-	if (!response.ok) {
-		const errorText = await response.text();
-		throw new Error(`HTTP ${response.status}: ${errorText}`);
-	}
-
-	const data = await response.json();
-	return data.data.translations.map(t => t.translatedText);
 };
 
 const getPinyin = text => {
@@ -84,7 +67,7 @@ const maskResult = (translations, pinyin, originalText) => {
 	};
 };
 
-const getTranslationAndPinyin = async (query, referrer) => {
+const getTranslationAndPinyin = async query => {
 	const { text, from, to } = query;
 
 	let result = {};
@@ -110,7 +93,8 @@ const getTranslationAndPinyin = async (query, referrer) => {
 	try {
 		console.log('getTranslations', text, from, to, query);
 		// Extract translations from Google Translate response.
-		translations = await getTranslations(text, from, to, referrer);
+		// First item contains the translations.
+		[translations] = await getTranslations(text, from, to);
 		console.log('translations', translations);
 		if (!translations.length) {
 			throw new Error(
@@ -119,7 +103,6 @@ const getTranslationAndPinyin = async (query, referrer) => {
 		}
 	} catch (err) {
 		console.log('err', err);
-		console.log('KEYSSSS', Object.keys(err));
 		throw new Error(`Failed to translate "${text}". ${err.message}`);
 	}
 
@@ -137,8 +120,8 @@ const getTranslationAndPinyin = async (query, referrer) => {
 	return result;
 };
 
-const translate = async (query, referrer) => {
-	return getTranslationAndPinyin(query, referrer);
+const translate = async query => {
+	return getTranslationAndPinyin(query);
 };
 
 module.exports = translate;
