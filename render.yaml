@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: chin-scraper-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/index.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8080"
+      - key: ALLOWED_ORIGINS
+        # You'll need to set this manually in Render dashboard
+        sync: false
+      - key: GOOGLE_API_KEY
+        # You'll need to set this manually in Render dashboard
+        sync: false
+    nodeVersion: 18 
