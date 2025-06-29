@@ -91,16 +91,18 @@ const getTranslationAndPinyin = async query => {
 
 	// Get the translation.
 	try {
+		console.log('getTranslations', text, from, to, query);
 		// Extract translations from Google Translate response.
 		// First item contains the translations.
 		[translations] = await getTranslations(text, from, to);
-
+		console.log('translations', translations);
 		if (!translations.length) {
 			throw new Error(
 				'No translations received from Google Translate API.'
 			);
 		}
 	} catch (err) {
+		console.log('err', err);
 		throw new Error(`Failed to translate "${text}". ${err.message}`);
 	}
 
