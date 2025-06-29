@@ -1,3 +1,6 @@
+// Due to not being able to pass referrer to the Google Translate API, falling
+// back to making a request with REST API.
+// const { Translate } = require('@google-cloud/translate').v2;
 const fetch = require('node-fetch');
 const { firstCapital } = require('../../utils');
 // Import pinyinjs, it has bunch of global set,
@@ -11,10 +14,7 @@ const stripNonChineseChars = text => {
 	return text.replace(REGEX_STRIP_NON_CHINESE_CHARS, '');
 };
 
-const getTranslations = async (text, from, to, referrer) => {
-	const strippedChineseChars = stripNonChineseChars(text).split('');
-	const textsToTranslate = [text, ...strippedChineseChars];
-
+const makeTranslateRequest = async (textsToTranslate, from, to, referrer) => {
 	const url = `https://translation.googleapis.com/language/translate/v2?key=${process.env.GOOGLE_API_KEY}`;
 	const response = await fetch(url, {
 		method: 'POST',
@@ -34,6 +34,20 @@ const getTranslations = async (text, from, to, referrer) => {
 		const errorText = await response.text();
 		throw new Error(`HTTP ${response.status}: ${errorText}`);
 	}
+
+	return response.json();
+};
+
+const getTranslations = async (text, from, to, referrer) => {
+	const strippedChineseChars = stripNonChineseChars(text).split('');
+	const textsToTranslate = [text, ...strippedChineseChars];
+
+	const response = await makeTranslateRequest(
+		textsToTranslate,
+		from,
+		to,
+		referrer
+	);
 
 	const data = await response.json();
 	return data.data.translations.map(t => t.translatedText);
@@ -108,18 +122,14 @@ const getTranslationAndPinyin = async (query, referrer) => {
 
 	// Get the translation.
 	try {
-		console.log('getTranslations', text, from, to, query);
 		// Extract translations from Google Translate response.
 		translations = await getTranslations(text, from, to, referrer);
-		console.log('translations', translations);
 		if (!translations.length) {
 			throw new Error(
 				'No translations received from Google Translate API.'
 			);
 		}
 	} catch (err) {
-		console.log('err', err);
-		console.log('KEYSSSS', Object.keys(err));
 		throw new Error(`Failed to translate "${text}". ${err.message}`);
 	}
 

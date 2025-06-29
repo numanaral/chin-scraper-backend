@@ -7,10 +7,8 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
 	try {
-		console.log('req.query', req.query);
-		console.log('req.headers.referer', req.headers.referer);
+		console.info(`[referer: ${req.headers.referer}] - Query: ${req.query}`);
 		const result = await translate(req.query, req.headers.referer);
-		console.log('result', result);
 		res.json(result);
 	} catch (err) {
 		next(generateError(err, 'Failed to translate.'));

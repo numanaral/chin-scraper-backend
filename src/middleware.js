@@ -8,17 +8,16 @@
  * @param {import("express").NextFunction} next - Next
  */
 const checkRequiredHeaders = (req, res, next) => {
+	const { headers } = req;
 	let error;
 	if (process.env.NODE_ENV === 'production') {
 		const hasRequiredHeaders = [
 			'origin',
 			'x-requested-with',
-		].some(headerName =>
-			Object.hasOwnProperty.call(req.headers, headerName)
-		);
+		].some(headerName => Object.hasOwnProperty.call(headers, headerName));
 		if (!hasRequiredHeaders) {
 			error = new Error(
-				"You don't have the required headers to make a request."
+				`You don't have the required headers to make a request. Headers: ${headers}`
 			);
 		}
 	}
@@ -49,11 +48,13 @@ const notFound = (req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
 	const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
+	const errorStack = { stack: err.stack };
+	console.error(`[Error: ${err.message}] - Stack:\n${errorStack}`);
 	res.status(statusCode);
 	res.json({
 		success: false,
 		message: err.message,
-		...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
+		...(process.env.NODE_ENV !== 'production' && errorStack),
 	});
 };
 

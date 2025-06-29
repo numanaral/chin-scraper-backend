@@ -21,17 +21,7 @@ app.use(
 		origin: (origin, callback) => {
 			// allow requests with no origin
 			// (like mobile apps or curl requests)
-			console.log('origin', origin);
-			console.debug('origin', origin);
 			if (!origin) return callback(null, true);
-			console.log(
-				'process.env.ALLOWED_ORIGINS',
-				process.env.ALLOWED_ORIGINS.split(',')
-			);
-			console.debug(
-				'process.env.ALLOWED_ORIGINS',
-				process.env.ALLOWED_ORIGINS.split(',')
-			);
 			if (process.env.ALLOWED_ORIGINS.split(',').indexOf(origin) === -1) {
 				const msg =
 					'The CORS policy for this site does not ' +
