@@ -5,12 +5,11 @@
  * @param {String} devMessage - Message that dev sees on top of the error caught
  */
 const generateError = (err, userMessage, devMessage = '') => {
-	const message =
-		// (process.env.NODE_ENV === 'production' && userMessage) ||
-		`${
-			(!devMessage && '') ||
-			`${devMessage}${(!devMessage.endsWith('.') && '.') || ''} `
-		}${err.message}`;
+	// eslint-disable-next-line no-param-reassign
+	if (devMessage && !devMessage.endsWith('.')) devMessage += '.';
+
+	// (process.env.NODE_ENV === 'production' && userMessage) ||
+	const message = `${devMessage}${err.message}`;
 
 	return new Error(message);
 };
