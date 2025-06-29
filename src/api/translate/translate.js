@@ -49,8 +49,7 @@ const getTranslations = async (text, from, to, referrer) => {
 		referrer
 	);
 
-	const data = await response.json();
-	return data.data.translations.map(t => t.translatedText);
+	return response.data.translations.map(t => t.translatedText);
 };
 
 const getPinyin = text => {
